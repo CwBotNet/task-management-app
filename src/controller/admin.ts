@@ -9,6 +9,7 @@ import {
   getTasksbyType,
   createTask,
   updateTaskById,
+  getTasksbyId,
 } from "../db/tasks";
 
 export const getEmployesByBranch = async (
@@ -35,27 +36,39 @@ export const getTaskByEmploy = async (
   res: express.Response
 ) => {
   try {
-    const { employName } = req.params;
-    const taskData = await getTaskByEmployName(employName);
-    console.log(taskData);
+    const employName = await getTaskByEmployName(req.params.employName);
+    console.log(employName);
 
-    if (!taskData) {
+    if (!employName) {
       return res.status(404).json({ message: "No Tasks Found" });
     }
 
     return res
       .status(200)
-      .json({ numberOfTasks: taskData.length, tasks: taskData });
+      .json({ numberOfTasks: employName.length, tasks: employName });
   } catch (error) {
     console.log(error);
     res.sendStatus(400).json({ message: "somthing went wrong" });
   }
 };
 
-export const getTaskByAdmin = async (
-  req: express.Request,
-  res: express.Response
-) => {};
+// export const getTaskByAdmin = async (
+//   req: express.Request,
+//   res: express.Response
+// ) => {
+//   try {
+//     const admin = req.params.name;
+//     const tasks = await getTasksByTaskGaver(admin);
+//     if (!admin) {
+//       return res.status(400).json({ message: "admin field is empty" });
+//     }
+
+//     return res.status(200).json({ numberOfTask: tasks.length, tasks: tasks });
+//   } catch (error) {
+//     console.log(error);
+//     res.sendStatus(400).json({ message: "somthing went wrong" });
+//   }
+// };
 
 export const addTasks = async (req: express.Request, res: express.Response) => {
   try {
@@ -130,7 +143,6 @@ export const updateTask = async (
 ) => {
   try {
     const { id } = req.params;
-
     const {
       branch,
       employName,
@@ -141,17 +153,16 @@ export const updateTask = async (
       taskGivenBy,
     } = req.body;
 
-    // if (
-    //   !branch ||
-    //   !employName ||
-    //   !taskDetail ||
-    //   !taskTitle ||
-    //   !startTime ||
-    //   !endTime ||
-    //   !taskGivenBy
-    // ) {
-    //   return res.status(400).json({ message: "Missing required fields" });
-    // }
+    if (!id) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+    const user = await getTasksbyId(id);
+
+    if (user == null || undefined) {
+      return res.status(400).json({ message: "No Task Found with this ID" });
+    }
+
+    console.log(user);
 
     const updatedTask = await updateTaskById(id, {
       branch,
@@ -163,7 +174,7 @@ export const updateTask = async (
       taskGivenBy,
     });
 
-    res.status(200).json({ message: "Updated successfully", task: updateTask });
+    res.status(200).json({ message: "Updated successfully", task: req.body });
   } catch (error) {
     console.log(error);
     res.sendStatus(400).json({ message: "somthing went wrong" });
@@ -176,11 +187,18 @@ export const deleteTask = async (
 ) => {
   try {
     const { id } = req.params;
+    if (!id) {
+      res.status(400).json({ message: "Could not find the task" });
+    }
+
+    const deleteId = await getTasksbyId(id);
+
+    console.log(deleteId);
+    if (deleteId == null || undefined) {
+      return res.status(400).json({ message: "task not found" });
+    }
     const deletedTask = await deleteTaskById(id);
 
-    if (!deletedTask) {
-      throw new Error("Could not find the task");
-    }
     return res
       .status(200)
       .json({ message: "task deleted successfully", task: deletedTask });

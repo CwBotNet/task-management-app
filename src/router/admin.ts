@@ -4,6 +4,7 @@ import {
   addTasks,
   deleteTask,
   getEmployesByBranch,
+  // getTaskByAdmin,
   getTaskByEmploy,
   updateTask,
 } from "../controller/admin";
@@ -13,5 +14,5 @@ export default (router: express.Router) => {
   router.patch("/admin/:id", updateTask);
   router.delete("/admin/:id", deleteTask);
   router.get("/admin/:branch", getEmployesByBranch);
-  router.get("/admin/:employName", getTaskByEmploy);
+  router.get("/admin/employ/:employName", getTaskByEmploy);
 };

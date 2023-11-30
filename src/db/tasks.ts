@@ -41,8 +41,7 @@ export const getTasksbyId = (id: string) => TaskModel.findById({ _id: id });
 
 // get task by employName
 export const getTaskByEmployName = (employName: String) =>
-  TaskModel.find({ employName: employName });
+  TaskModel.find({ employName });
 
 // get tasks by task gaver
-export const getTasksByTaskGaver = (taskGaver: string) =>
-  TaskModel.find({ taskGaver });
+export const getTasksByTaskGaver = (admin: string) => TaskModel.find({ admin });
