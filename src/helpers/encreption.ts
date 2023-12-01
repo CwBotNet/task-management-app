@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 
+// encoding password function
 export const encryptPassword = (password: string) => {
   const hashedPassword = bcrypt.hash(password, 10);
   console.log(hashedPassword);
@@ -7,6 +8,7 @@ export const encryptPassword = (password: string) => {
   return hashedPassword;
 };
 
+// decoding passwod function
 export const decryptPassword = async (
   hashedPassword: string,
   password: string
