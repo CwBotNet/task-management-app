@@ -52,23 +52,24 @@ export const getTaskByEmploy = async (
   }
 };
 
-// export const getTaskByAdmin = async (
-//   req: express.Request,
-//   res: express.Response
-// ) => {
-//   try {
-//     const admin = req.params.name;
-//     const tasks = await getTasksByTaskGaver(admin);
-//     if (!admin) {
-//       return res.status(400).json({ message: "admin field is empty" });
-//     }
+// fix this Function
+export const getTaskByAdmin = async (
+  req: express.Request,
+  res: express.Response
+) => {
+  try {
+    const admin = req.params.name;
+    const tasks = await getTasksByTaskGaver(admin);
+    if (!admin) {
+      return res.status(400).json({ message: "admin field is empty" });
+    }
 
-//     return res.status(200).json({ numberOfTask: tasks.length, tasks: tasks });
-//   } catch (error) {
-//     console.log(error);
-//     res.sendStatus(400).json({ message: "somthing went wrong" });
-//   }
-// };
+    return res.status(200).json({ numberOfTask: tasks.length, tasks: tasks });
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(400).json({ message: "somthing went wrong" });
+  }
+};
 
 export const addTasks = async (req: express.Request, res: express.Response) => {
   try {
