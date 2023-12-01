@@ -1,7 +1,5 @@
 import bcrypt from "bcrypt";
 
-// const SECRET = process.env.SECRET;
-
 export const encryptPassword = (password: string) => {
   const hashedPassword = bcrypt.hash(password, 10);
   console.log(hashedPassword);
