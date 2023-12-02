@@ -75,7 +75,7 @@ export const loginUser = async (
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid password" });
     }
-
+    // jwt token creation
     const accessToken = jwt.sign(
       {
         id: user._id,
@@ -86,6 +86,7 @@ export const loginUser = async (
       secretKey,
       { expiresIn: "1h" }
     );
+    res.cookie("jwt", accessToken, { httpOnly: true, secure: true });
     res.status(200).json({ message: "login successful", accessToken }).end();
   } catch (error) {
     console.log(error);

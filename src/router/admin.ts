@@ -8,11 +8,14 @@ import {
   getTaskByEmploy,
   updateTask,
 } from "../controller/admin";
+
+import { isAuthenticated } from "../middleware/authentication";
+
 export default (router: express.Router) => {
-  router.post("/admin", addTasks);
-  router.get("/admin", GetAllTasks);
-  router.patch("/admin/:id", updateTask);
-  router.delete("/admin/:id", deleteTask);
-  router.get("/admin/:branch", getEmployesByBranch);
-  router.get("/admin/employ/:employName", getTaskByEmploy);
+  router.post("/admin", isAuthenticated, addTasks);
+  router.get("/admin", isAuthenticated, GetAllTasks);
+  router.patch("/admin/:id", isAuthenticated, updateTask);
+  router.delete("/admin/:id", isAuthenticated, deleteTask);
+  router.get("/admin/:branch", isAuthenticated, getEmployesByBranch);
+  router.get("/admin/employ/:employName", isAuthenticated, getTaskByEmploy);
 };

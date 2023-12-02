@@ -1,14 +1,9 @@
-// console.table({
-//   tsConfig: true,
-//   nodemonConfig: true,
-//   greet: "Hello typeScript",
-// });
-
 import express from "express";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import http from "http";
 import router from "./router";
+import cookieParser from "cookie-parser";
 import "dotenv/config";
 
 const app = express();
@@ -16,6 +11,7 @@ const app = express();
 const PORT = 3000 || process.env.PORT;
 
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 app.get("/", (req, res) => {
   res.send("hello server");
